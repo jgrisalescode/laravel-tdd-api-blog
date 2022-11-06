@@ -16,7 +16,7 @@ class ArticleResource extends JsonResource
     {
         return [
             "type" => "articles",
-            "title" => (string) $this->resource->getRouteKey(),
+            "id" => (string) $this->resource->getRouteKey(),
             "attributes" => [
                 "title" => $this->resource->title,
                 "slug"  => $this->resource->slug,
@@ -26,5 +26,12 @@ class ArticleResource extends JsonResource
                 "self" => route("api.v1.articles.show", $this->resource)
             ]
         ];
+    }
+
+    public function toResponse($request)
+    {
+        return parent::toResponse($request)->withHeaders([
+            "Location"  => route('api.v1.articles.show', $this->resource)
+        ]);
     }
 }
